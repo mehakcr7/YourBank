@@ -56,6 +56,8 @@ function deposit_onclick() {
 
   deposit_btn.style.display = "flex";
   withdraw_btn.style.display = "none";
+  deposit_overlay_page_main.style.top ='210%'// responsivenss
+
 
   // Blur all elements except the overlay
   //
@@ -185,6 +187,7 @@ function withdraw_onclick() {
   );
   deposit_overlay_page_main.style.display = "flex";
 
+
   //display
   account_number.style.display = "none";
   email_id.style.display = "none";
@@ -198,6 +201,7 @@ function withdraw_onclick() {
 
   deposit_btn.style.display = "none";
   withdraw_btn.style.display = "flex";
+  deposit_overlay_page_main.style.top ='230%'//responsiveness
 
   //   Blur all elements except the overlay
   document
@@ -368,6 +372,8 @@ function account_details_onclick() {
   table.style.display = "none";
 
   deposit_box.style.display = "flex";
+  deposit_overlay_page_main.style.top ='250%'// responsivenss
+
 }
 
 function transaction_history_btn_onclick() {
@@ -472,6 +478,8 @@ function balance_onclick() {
   table.style.display = "none";
 
   deposit_box.style.display = "flex";
+  deposit_overlay_page_main.style.top ='280%'// responsivenss
+  
 
   // transfer account deposite btnnnnnnnnn........................
 
