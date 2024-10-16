@@ -34,7 +34,7 @@ function submitt() {
     console.log(name_value);
 
     if (name_value === get_username && pass_value === get_userpass) {
-      window.location.href = "bank.html";
+      window.location.href = "index.html";
 
       var recent_data = {};
       recent_data.recent_email = name_value;

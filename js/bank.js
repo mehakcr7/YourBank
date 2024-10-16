@@ -32,6 +32,11 @@ var balance_amount = recent_data_fetched.balance_amount;
 var balance = document.getElementById("balance");
 
 function deposit_onclick() {
+  if(!recent_data_fetched){
+    alert("The account is not logged in.");
+  }
+  else{
+    
   var deposit_overlay_page_main = document.getElementById(
     "deposit_overlay_page_main"
   );
@@ -56,8 +61,11 @@ function deposit_onclick() {
 
   deposit_btn.style.display = "flex";
   withdraw_btn.style.display = "none";
-  deposit_overlay_page_main.style.top ='210%'// responsivenss
-
+  if (window.innerWidth <= 426) {
+    deposit_overlay_page_main.style.top = '210%';
+  } else {
+    deposit_overlay_page_main.style.top = ''; // Reset or set to desired value for larger screens
+  }
 
   // Blur all elements except the overlay
   //
@@ -166,6 +174,8 @@ function deposit_onclick() {
       alert("Incorrect Password, Please Try Again");
     }
   });
+
+  }
 }
 //Inside cancel button
 //
@@ -182,198 +192,219 @@ function cancel_onclick() {
 // withdraw main
 //
 function withdraw_onclick() {
-  var deposit_overlay_page_main = document.getElementById(
-    "deposit_overlay_page_main"
-  );
-  deposit_overlay_page_main.style.display = "flex";
-
-
-  //display
-  account_number.style.display = "none";
-  email_id.style.display = "none";
-  amount.style.display = "flex";
-  password.style.display = "flex";
-  balance.style.display = "none";
-  transaction_history_btn.style.display = "none";
-  table.style.display = "none";
-  transfer_account_number.style.display = "none";
-  transaction_heading.style.display = "none";
-
-  deposit_btn.style.display = "none";
-  withdraw_btn.style.display = "flex";
-  deposit_overlay_page_main.style.top ='230%'//responsiveness
-
-  //   Blur all elements except the overlay
-  document
-    .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
-    .forEach((element) => {
-      element.classList.add("blurred");
-    });
-  // Remove any previous event listeners to prevent multiple triggers
-
-  var new_withdraw_btn = withdraw_btn.cloneNode(true);
-  deposit_btn.parentNode.replaceChild(new_withdraw_btn, withdraw_btn);
-
-  // withdraw function withdraw button function
-
-  new_withdraw_btn.addEventListener("click", () => {
-    var user_amount = document.getElementById("amount").value;
-    var user_password = document.getElementById("password").value;
-
-    //insufficent balance
-    if (recent_data_fetched.balance_amount < user_amount) {
-      var deposit_box = document.getElementById("deposit_box");
-
-      var deposit_box_main = document.getElementById("deposit_box_main");
-      // to remove if there exist any profile
-
-      account_number.style.display = "none";
-      transfer_account_number.style.display = "none";
-      transaction_heading.style.display = "none";
-
-      email_id.style.display = "flex";
-      email_id.innerText = "Insufficent Balance";
-      amount.style.display = "flex";
-      password.style.display = "flex";
-      withdraw_btn.style.display = "flex";
-      deposit_btn.style.display = "none";
-      balance.style.display = "none";
-      deposited_amount_div.style.display = "none";
-      transaction_history_btn.style.display = "none";
-      table.style.display = "none";
-
-      deposit_box.style.display = "none";
-    }
-
-    // if password is correct
-    else if (recent_data_fetched.recent_password === user_password) {
-      // date and time ////////////////////////////////////
-      const d = new Date();
-      const DateOnly = d.toLocaleDateString();
-      // transaction for withdraw
-      var transaction_details = {
-        credit: "",
-        debit: user_amount,
-        date: DateOnly,
-      };
-
-      // Push the new transaction to the transactions array
-      transactions.push(transaction_details);
-
-      var deposit_box = document.getElementById("deposit_box");
-
-      deposit_box.style.display = "none";
-      var deposit_box_main = document.getElementById("deposit_box_main");
-      // to remove if there exist any profile
-
-      var deposited_amount_div = document.createElement("div");
-      var existingdepositbox = document.querySelector("#deposited_amount_div");
-      deposit_box_main.append(deposited_amount_div);
-      deposited_amount_div.id = "deposited_amount_div";
-
-      if (existingdepositbox) {
-        existingdepositbox.remove();
-      }
-      //...............................................
-
-      // to subtract withdraw in balance amount
-
-      balance_amount = parseInt(balance_amount) - parseInt(user_amount);
-      console.log(balance_amount);
-
-      //retrieve data from localstorage for updating balance amount
-      console.log(recent_data_fetched.recent_email);
-      var stored_details = localStorage.getItem("personinfo");
-      if (stored_details) {
-        var person = JSON.parse(stored_details);
-      }
-
-      //store data to localstorage for updating balance amount
-
-      for (let i = 0; i < person.length; i++) {
-        if (person[i].email === recent_data_fetched.recent_email) {
-          console.log(person[i]);
-          person[i].balance_amount = balance_amount;
-
-          recent_data_fetched.balance_amount = balance_amount;
-
-          // storing transaction details
-          person[i].transactions = transactions;
-
-          recent_data_fetched.transactions = transactions;
-
-          const updated_recent_data = JSON.stringify(recent_data_fetched);
-          localStorage.setItem("recentinfo", updated_recent_data);
-
-          const updated_data = JSON.stringify(person);
-          localStorage.setItem("personinfo", updated_data);
-        }
-      }
-
-      // debited amount in withdraw
-      balance.innerText = user_amount + " Rupees Debited";
-
-      // display none
-      transaction_heading.style.display = "none";
-
-      account_number.style.display = "none";
-      email_id.style.display = "none";
-      amount.style.display = "none";
-      password.style.display = "none";
-      withdraw_btn.style.display = "none";
-      deposit_btn.style.display = "none";
-      balance.style.display = "flex";
-      deposited_amount_div.style.display = "none";
-      transaction_history_btn.style.display = "none";
-      table.style.display = "none";
-
-      deposit_box.style.display = "flex";
+  if(!recent_data_fetched){
+    alert("The account is not logged in.");
+  }
+  else{
+    var deposit_overlay_page_main = document.getElementById(
+      "deposit_overlay_page_main"
+    );
+    deposit_overlay_page_main.style.display = "flex";
+  
+  
+    //display
+    account_number.style.display = "none";
+    email_id.style.display = "none";
+    amount.style.display = "flex";
+    password.style.display = "flex";
+    balance.style.display = "none";
+    transaction_history_btn.style.display = "none";
+    table.style.display = "none";
+    transfer_account_number.style.display = "none";
+    transaction_heading.style.display = "none";
+  
+    deposit_btn.style.display = "none";
+    withdraw_btn.style.display = "flex";
+    if (window.innerWidth <= 426) {
+      deposit_overlay_page_main.style.top = '230%';
     } else {
-      alert("Incorrect Password, Please Try Again");
+      deposit_overlay_page_main.style.top = ''; // Reset or set to desired value for larger screens
     }
-  });
+  
+    //   Blur all elements except the overlay
+    document
+      .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
+      .forEach((element) => {
+        element.classList.add("blurred");
+      });
+    // Remove any previous event listeners to prevent multiple triggers
+  
+    var new_withdraw_btn = withdraw_btn.cloneNode(true);
+    deposit_btn.parentNode.replaceChild(new_withdraw_btn, withdraw_btn);
+  
+    // withdraw function withdraw button function
+  
+    new_withdraw_btn.addEventListener("click", () => {
+      var user_amount = document.getElementById("amount").value;
+      var user_password = document.getElementById("password").value;
+  
+      //insufficent balance
+      if (recent_data_fetched.balance_amount < user_amount) {
+        var deposit_box = document.getElementById("deposit_box");
+  
+        var deposit_box_main = document.getElementById("deposit_box_main");
+        // to remove if there exist any profile
+  
+        account_number.style.display = "none";
+        transfer_account_number.style.display = "none";
+        transaction_heading.style.display = "none";
+  
+        email_id.style.display = "flex";
+        email_id.innerText = "Insufficent Balance";
+        amount.style.display = "flex";
+        password.style.display = "flex";
+        withdraw_btn.style.display = "flex";
+        deposit_btn.style.display = "none";
+        balance.style.display = "none";
+        deposited_amount_div.style.display = "none";
+        transaction_history_btn.style.display = "none";
+        table.style.display = "none";
+  
+        deposit_box.style.display = "none";
+      }
+  
+      // if password is correct
+      else if (recent_data_fetched.recent_password === user_password) {
+        // date and time ////////////////////////////////////
+        const d = new Date();
+        const DateOnly = d.toLocaleDateString();
+        // transaction for withdraw
+        var transaction_details = {
+          credit: "",
+          debit: user_amount,
+          date: DateOnly,
+        };
+  
+        // Push the new transaction to the transactions array
+        transactions.push(transaction_details);
+  
+        var deposit_box = document.getElementById("deposit_box");
+  
+        deposit_box.style.display = "none";
+        var deposit_box_main = document.getElementById("deposit_box_main");
+        // to remove if there exist any profile
+  
+        var deposited_amount_div = document.createElement("div");
+        var existingdepositbox = document.querySelector("#deposited_amount_div");
+        deposit_box_main.append(deposited_amount_div);
+        deposited_amount_div.id = "deposited_amount_div";
+  
+        if (existingdepositbox) {
+          existingdepositbox.remove();
+        }
+        //...............................................
+  
+        // to subtract withdraw in balance amount
+  
+        balance_amount = parseInt(balance_amount) - parseInt(user_amount);
+        console.log(balance_amount);
+  
+        //retrieve data from localstorage for updating balance amount
+        console.log(recent_data_fetched.recent_email);
+        var stored_details = localStorage.getItem("personinfo");
+        if (stored_details) {
+          var person = JSON.parse(stored_details);
+        }
+  
+        //store data to localstorage for updating balance amount
+  
+        for (let i = 0; i < person.length; i++) {
+          if (person[i].email === recent_data_fetched.recent_email) {
+            console.log(person[i]);
+            person[i].balance_amount = balance_amount;
+  
+            recent_data_fetched.balance_amount = balance_amount;
+  
+            // storing transaction details
+            person[i].transactions = transactions;
+  
+            recent_data_fetched.transactions = transactions;
+  
+            const updated_recent_data = JSON.stringify(recent_data_fetched);
+            localStorage.setItem("recentinfo", updated_recent_data);
+  
+            const updated_data = JSON.stringify(person);
+            localStorage.setItem("personinfo", updated_data);
+          }
+        }
+  
+        // debited amount in withdraw
+        balance.innerText = user_amount + " Rupees Debited";
+  
+        // display none
+        transaction_heading.style.display = "none";
+  
+        account_number.style.display = "none";
+        email_id.style.display = "none";
+        amount.style.display = "none";
+        password.style.display = "none";
+        withdraw_btn.style.display = "none";
+        deposit_btn.style.display = "none";
+        balance.style.display = "flex";
+        deposited_amount_div.style.display = "none";
+        transaction_history_btn.style.display = "none";
+        table.style.display = "none";
+  
+        deposit_box.style.display = "flex";
+      } else {
+        alert("Incorrect Password, Please Try Again");
+      }
+    });
+
+  }
+  
 }
 
 //Account Details
 
 function account_details_onclick() {
-  var deposit_overlay_page_main = document.getElementById(
-    "deposit_overlay_page_main"
-  );
-  deposit_overlay_page_main.style.display = "flex";
-
-  //   Blur all elements except the overlay
-  document
-    .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
-    .forEach((element) => {
-      element.classList.add("blurred");
-    });
-
-  //
-  //
-  //
-  balance.innerText = "Balance : " + balance_amount;
-  account_number.innerText = "Account Number : " + recent_data_fetched.account;
-  email_id.innerText = "Email : " + recent_data_fetched.recent_email;
-
-  // display none
-  amount.style.display = "none";
-  transfer_account_number.style.display = "none";
-  transaction_heading.style.display="none"
-
-
-  account_number.style.display = "flex";
-  email_id.style.display = "flex";
-  password.style.display = "none";
-  withdraw_btn.style.display = "none";
-  deposit_btn.style.display = "none";
-  balance.style.display = "flex";
-  transaction_history_btn.style.display = "flex";
-  table.style.display = "none";
-
-  deposit_box.style.display = "flex";
-  deposit_overlay_page_main.style.top ='250%'// responsivenss
-
+  if(!recent_data_fetched){
+    alert("The account is not logged in.");
+  }
+  else{
+    var deposit_overlay_page_main = document.getElementById(
+      "deposit_overlay_page_main"
+    );
+    deposit_overlay_page_main.style.display = "flex";
+  
+    //   Blur all elements except the overlay
+    document
+      .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
+      .forEach((element) => {
+        element.classList.add("blurred");
+      });
+  
+    //
+    //
+    //
+    balance.innerText = "Balance : " + balance_amount;
+    account_number.innerText = "Account Number : " + recent_data_fetched.account;
+    email_id.innerText = "Email : " + recent_data_fetched.recent_email;
+  
+    // display none
+    amount.style.display = "none";
+    transfer_account_number.style.display = "none";
+    transaction_heading.style.display="none"
+  
+  
+    account_number.style.display = "flex";
+    email_id.style.display = "flex";
+    password.style.display = "none";
+    withdraw_btn.style.display = "none";
+    deposit_btn.style.display = "none";
+    balance.style.display = "flex";
+    transaction_history_btn.style.display = "flex";
+    table.style.display = "none";
+  
+    deposit_box.style.display = "flex";
+    if (window.innerWidth <= 426) {
+      deposit_overlay_page_main.style.top = '250%';
+    } else {
+      deposit_overlay_page_main.style.top = ''; // Reset or set to desired value for larger screens
+    }
+  
+  }
+  
 }
 
 function transaction_history_btn_onclick() {
@@ -447,179 +478,189 @@ function transaction_history_btn_onclick() {
 
 // balance on click
 function balance_onclick() {
-  var deposit_overlay_page_main = document.getElementById(
-    "deposit_overlay_page_main"
-  );
-  deposit_overlay_page_main.style.display = "flex";
-
-  //   Blur all elements except the overlay
-  document
-    .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
-    .forEach((element) => {
-      element.classList.add("blurred");
+  if(!recent_data_fetched){
+    alert("The account is not logged in.");
+  }else{
+    var deposit_overlay_page_main = document.getElementById(
+      "deposit_overlay_page_main"
+    );
+    deposit_overlay_page_main.style.display = "flex";
+  
+    //   Blur all elements except the overlay
+    document
+      .querySelectorAll("body > *:not(.deposit_overlay_page_main)")
+      .forEach((element) => {
+        element.classList.add("blurred");
+      });
+  
+    //
+    //
+    //
+  
+    // display none
+    account_number.style.display = "none";
+    transaction_heading.style.display = "none";
+  
+    transfer_account_number.style.display = "flex";
+    email_id.style.display = "none";
+    amount.style.display = "flex";
+    password.style.display = "flex";
+    withdraw_btn.style.display = "none";
+    deposit_btn.style.display = "flex";
+    balance.style.display = "none";
+    transaction_history_btn.style.display = "none";
+    table.style.display = "none";
+  
+    deposit_box.style.display = "flex";
+    if (window.innerWidth <= 426) {
+      deposit_overlay_page_main.style.top = '280%';
+    } else {
+      deposit_overlay_page_main.style.top = ''; // Reset or set to desired value for larger screens
+    }
+    
+  
+    // transfer account deposite btnnnnnnnnn........................
+  
+    var new_deposit_btn = deposit_btn.cloneNode(true);
+    deposit_btn.parentNode.replaceChild(new_deposit_btn, deposit_btn);
+  
+    // deposit btn event handler
+    //
+    new_deposit_btn.addEventListener("click", () => {
+      var user_amount = document.getElementById("amount").value;
+      var user_account = document.getElementById("transfer_account_number").value;
+      console.log(user_account);
+      var user_password = document.getElementById("password").value;
+      let flag = 0;
+  
+      //retrieve data from localstorage for updating balance amount
+      var stored_details = localStorage.getItem("personinfo");
+      if (stored_details) {
+        var person = JSON.parse(stored_details);
+      }
+      // user account number matching with localstorage account number
+      for (let i = 0; i < person.length; i++) {
+        // to check user account number is exist
+        if (user_account == person[i].account_number) {
+          flag = 0;
+          //insufficent balance
+  
+          if (recent_data_fetched.balance_amount < user_amount) {
+            var deposit_box = document.getElementById("deposit_box");
+  
+            var deposit_box_main = document.getElementById("deposit_box_main");
+            // to remove if there exist any profile
+  
+            account_number.style.display = "none";
+            transfer_account_number.style.display = "flex";
+  
+            email_id.style.display = "flex";
+            email_id.innerText = "Insufficent Balance";
+            amount.style.display = "flex";
+            password.style.display = "flex";
+            withdraw_btn.style.display = "none";
+            deposit_btn.style.display = "flex";
+            balance.style.display = "none";
+            deposited_amount_div.style.display = "none";
+            transaction_history_btn.style.display = "none";
+            table.style.display = "none";
+            transaction_heading.style.display = "none";
+  
+            deposit_box.style.display = "none";
+          }
+          // suffiecient balance
+          else if (recent_data_fetched.recent_password == user_password) {
+            person[i].balance_amount =
+              parseInt(person[i].balance_amount) + parseInt(user_amount);
+            // date and time ////////////////////////////////////
+            const d = new Date();
+            const DateOnly = d.toLocaleDateString();
+            // transaction amount
+            var transaction_details = {
+              credit: "",
+              debit: user_amount,
+              date: DateOnly,
+            };
+  
+            // Push the new transaction to the transactions array
+            transactions.push(transaction_details);
+  
+            var deposit_box = document.getElementById("deposit_box");
+  
+            deposit_box.style.display = "none";
+            var deposit_box_main = document.getElementById("deposit_box_main");
+            // to remove if there exist any profile
+  
+            var deposited_amount_div = document.createElement("div");
+            var existingdepositbox = document.querySelector(
+              "#deposited_amount_div"
+            );
+            deposit_box_main.append(deposited_amount_div);
+            deposited_amount_div.id = "deposited_amount_div";
+  
+            if (existingdepositbox) {
+              existingdepositbox.remove();
+            }
+            //...............................................
+  
+            // to add deposit in balance amount
+  
+            balance_amount = parseInt(balance_amount) - parseInt(user_amount);
+  
+            //
+  
+            //store data to localstorage for updating balance amount
+  
+            for (let i = 0; i < person.length; i++) {
+              if (person[i].email === recent_data_fetched.recent_email) {
+                person[i].balance_amount = balance_amount;
+                // storing transaction details
+                person[i].transactions = transactions;
+  
+                recent_data_fetched.transactions = transactions;
+  
+                recent_data_fetched.balance_amount = balance_amount;
+  
+                const updated_recent_data = JSON.stringify(recent_data_fetched);
+                localStorage.setItem("recentinfo", updated_recent_data);
+  
+                const updated_data = JSON.stringify(person);
+                localStorage.setItem("personinfo", updated_data);
+              }
+            }
+  
+            // debited amount in transfer account
+            balance.innerText = user_amount + " Rupees Debited";
+  
+            // display none
+            amount.style.display = "none";
+            password.style.display = "none";
+            withdraw_btn.style.display = "none";
+            new_deposit_btn.style.display = "none";
+            balance.style.display = "flex";
+            table.style.display = "none";
+            transfer_account_number.style.display = "none";
+            transaction_heading.style.display = "none";
+  
+            deposited_amount_div.style.display = "none";
+            transaction_history_btn.style.display = "none";
+  
+            deposit_box.style.display = "flex";
+          } else {
+            alert("Incorrect Password, Please Try Again");
+          }
+  
+          break;
+        } else {
+          flag = 1;
+        }
+      }
+      // if account number doesn't exist
+      if (flag == 1) {
+        alert("invalid Account Number");
+      }
     });
 
-  //
-  //
-  //
-
-  // display none
-  account_number.style.display = "none";
-  transaction_heading.style.display = "none";
-
-  transfer_account_number.style.display = "flex";
-  email_id.style.display = "none";
-  amount.style.display = "flex";
-  password.style.display = "flex";
-  withdraw_btn.style.display = "none";
-  deposit_btn.style.display = "flex";
-  balance.style.display = "none";
-  transaction_history_btn.style.display = "none";
-  table.style.display = "none";
-
-  deposit_box.style.display = "flex";
-  deposit_overlay_page_main.style.top ='280%'// responsivenss
+  }
   
-
-  // transfer account deposite btnnnnnnnnn........................
-
-  var new_deposit_btn = deposit_btn.cloneNode(true);
-  deposit_btn.parentNode.replaceChild(new_deposit_btn, deposit_btn);
-
-  // deposit btn event handler
-  //
-  new_deposit_btn.addEventListener("click", () => {
-    var user_amount = document.getElementById("amount").value;
-    var user_account = document.getElementById("transfer_account_number").value;
-    console.log(user_account);
-    var user_password = document.getElementById("password").value;
-    let flag = 0;
-
-    //retrieve data from localstorage for updating balance amount
-    var stored_details = localStorage.getItem("personinfo");
-    if (stored_details) {
-      var person = JSON.parse(stored_details);
-    }
-    // user account number matching with localstorage account number
-    for (let i = 0; i < person.length; i++) {
-      // to check user account number is exist
-      if (user_account == person[i].account_number) {
-        flag = 0;
-        //insufficent balance
-
-        if (recent_data_fetched.balance_amount < user_amount) {
-          var deposit_box = document.getElementById("deposit_box");
-
-          var deposit_box_main = document.getElementById("deposit_box_main");
-          // to remove if there exist any profile
-
-          account_number.style.display = "none";
-          transfer_account_number.style.display = "flex";
-
-          email_id.style.display = "flex";
-          email_id.innerText = "Insufficent Balance";
-          amount.style.display = "flex";
-          password.style.display = "flex";
-          withdraw_btn.style.display = "none";
-          deposit_btn.style.display = "flex";
-          balance.style.display = "none";
-          deposited_amount_div.style.display = "none";
-          transaction_history_btn.style.display = "none";
-          table.style.display = "none";
-          transaction_heading.style.display = "none";
-
-          deposit_box.style.display = "none";
-        }
-        // suffiecient balance
-        else if (recent_data_fetched.recent_password == user_password) {
-          person[i].balance_amount =
-            parseInt(person[i].balance_amount) + parseInt(user_amount);
-          // date and time ////////////////////////////////////
-          const d = new Date();
-          const DateOnly = d.toLocaleDateString();
-          // transaction amount
-          var transaction_details = {
-            credit: "",
-            debit: user_amount,
-            date: DateOnly,
-          };
-
-          // Push the new transaction to the transactions array
-          transactions.push(transaction_details);
-
-          var deposit_box = document.getElementById("deposit_box");
-
-          deposit_box.style.display = "none";
-          var deposit_box_main = document.getElementById("deposit_box_main");
-          // to remove if there exist any profile
-
-          var deposited_amount_div = document.createElement("div");
-          var existingdepositbox = document.querySelector(
-            "#deposited_amount_div"
-          );
-          deposit_box_main.append(deposited_amount_div);
-          deposited_amount_div.id = "deposited_amount_div";
-
-          if (existingdepositbox) {
-            existingdepositbox.remove();
-          }
-          //...............................................
-
-          // to add deposit in balance amount
-
-          balance_amount = parseInt(balance_amount) - parseInt(user_amount);
-
-          //
-
-          //store data to localstorage for updating balance amount
-
-          for (let i = 0; i < person.length; i++) {
-            if (person[i].email === recent_data_fetched.recent_email) {
-              person[i].balance_amount = balance_amount;
-              // storing transaction details
-              person[i].transactions = transactions;
-
-              recent_data_fetched.transactions = transactions;
-
-              recent_data_fetched.balance_amount = balance_amount;
-
-              const updated_recent_data = JSON.stringify(recent_data_fetched);
-              localStorage.setItem("recentinfo", updated_recent_data);
-
-              const updated_data = JSON.stringify(person);
-              localStorage.setItem("personinfo", updated_data);
-            }
-          }
-
-          // debited amount in transfer account
-          balance.innerText = user_amount + " Rupees Debited";
-
-          // display none
-          amount.style.display = "none";
-          password.style.display = "none";
-          withdraw_btn.style.display = "none";
-          new_deposit_btn.style.display = "none";
-          balance.style.display = "flex";
-          table.style.display = "none";
-          transfer_account_number.style.display = "none";
-          transaction_heading.style.display = "none";
-
-          deposited_amount_div.style.display = "none";
-          transaction_history_btn.style.display = "none";
-
-          deposit_box.style.display = "flex";
-        } else {
-          alert("Incorrect Password, Please Try Again");
-        }
-
-        break;
-      } else {
-        flag = 1;
-      }
-    }
-    // if account number doesn't exist
-    if (flag == 1) {
-      alert("invalid Account Number");
-    }
-  });
 }
