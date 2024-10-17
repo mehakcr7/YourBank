@@ -2,7 +2,7 @@
 
 body{
   background-color: black;
-  background-image: url("images/Abstract\ Design\ \(1\).svg");
+  background-image: url("../images/Abstract-Design.svg");
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -23,11 +23,12 @@ body{
 
 /* Box container styling */
 .box1 {
-  width: 400px;
+  width: 600px;
   height: auto;
   padding: 40px;
   border-radius: 20px;
-  background-color: #ffffff;
+  background-color: black;
+  border: 1px solid white;
   /* background-image: url("images/grid\ design.svg"); */
   background-repeat: no-repeat;
   background-size: cover; 
@@ -49,7 +50,8 @@ body{
   height: 50px;
   border-radius: 25px;
   border: 1px solid #ced4da;
-  background-color: #f8f9fa;
+  background-color: black;
+  padding-left: 20px;
   font-size: 16px;
   color: #495057;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -67,8 +69,10 @@ body{
   height: 50px;
   background-color: #caff33;
   color: black;
-  font-size: 18px;
+  font-size: 15px;
   border-radius: 25px;
+  padding: 10px;
+  font-family: sans-serif;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 5.3s ease;
@@ -80,27 +84,35 @@ body{
 }
 
 /* Forgot and Sign-up link styling */
-.forgot a {
-  color: #007bff;
+/* .forgot a {
+  color: #edf0f4;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
-}
+} */
 
-.forgot a:hover {
+/* .forgot a:hover {
   color: #0056b3;
   text-decoration: underline;
-}
+} */
 a {
-  color: #007bff;
+  color: white;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
+  
 }
 
 a:hover {
   color: #0056b3;
   text-decoration: underline;
+}
+h1{
+  color: #caff33;
+}
+p{
+  color: white;
+
 }
 
 /* Responsive design for smaller devices */
