@@ -52,8 +52,8 @@ body{
   border: 1px solid #ced4da;
   background-color: black;
   padding-left: 20px;
+  color: whitesmoke;
   font-size: 16px;
-  color: #495057;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
